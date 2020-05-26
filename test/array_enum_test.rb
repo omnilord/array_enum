@@ -64,6 +64,7 @@ class ArrayEnumTest < Minitest::Test
 
   def test_lists_values
     assert_equal User.favourite_colors, {"red"=>1, "blue"=>2, "green"=>3}
+    assert_equal Company.favourite_colors, {"red" => "red", "blue" => "blue", "green" => "green"}
   end
 
   def test_values_can_be_accessed_indifferently
@@ -71,5 +72,13 @@ class ArrayEnumTest < Minitest::Test
     assert_equal User.favourite_colors[:blue], 2
     assert_equal User.favourite_colors[:green], 3
     assert_equal User.favourite_colors["red"], 1
+    assert_equal Company.favourite_colors[:red], "red"
+    assert_equal Company.favourite_colors["red"],"red"
+  end
+
+  # Casting
+  def test_quering_db_with_casting_type_defined
+    company = Company.create!(favourite_colors: ["red"])
+    assert_equal [company], Company.with_favourite_colors("red")
   end
 end
